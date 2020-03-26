@@ -2,5 +2,7 @@ parameters:
     level: 7
     paths:
         - src
+    ignoreErrors:
+        - "#no (return )?typehint specified#"
 includes:
   	- vendor/phpstan/phpstan-strict-rules/rules.neon
