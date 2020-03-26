@@ -1,0 +1,47 @@
+{
+    "name": "jasny/varcache",
+    "description": "Varcache",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Arnold Daniels",
+            "email": "arnold@jasny.net",
+            "homepage": "https://jasny.net"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/jasny/varcache/issues",
+        "source": "https://github.com/jasny/varcache"
+    },
+    "require": {
+        "php": ">=7.4.0"
+    },
+    "require-dev": {
+        "jasny/php-code-quality": "^2.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jasny\\Varcache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jasny\\Varcache\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "phpstan analyse",
+            "phpunit --testdox --colors=always",
+            "phpcs -p src"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
