@@ -33,7 +33,7 @@ class Cache implements CacheInterface
     {
         $file = $this->getFile($key);
 
-        return \opcache_is_script_cached($file) || \file_exists($file);
+        return self::opcacheIsCached($file) || \file_exists($file);
     }
 
     /**
@@ -43,7 +43,7 @@ class Cache implements CacheInterface
     {
         $file = $this->getFile($key);
 
-        if (!\opcache_is_script_cached($file) && !\file_exists($file)) {
+        if (!self::opcacheIsCached($file) && !\file_exists($file)) {
             return $default;
         }
 
@@ -79,7 +79,7 @@ class Cache implements CacheInterface
     {
         $file = $this->getFile($key);
 
-        \opcache_invalidate($file);
+        self::opcacheInvalidate($file);
 
         return \file_exists($file) ? \unlink($file) : true;
     }
@@ -102,7 +102,7 @@ class Cache implements CacheInterface
         return Pipeline::with($files)
             ->filter(fn($filename) => fnmatch('cache.*.php', $filename))
             ->map(fn($filename) => $this->dir . '/' . $filename)
-            ->apply(fn($file) => \opcache_invalidate($file))
+            ->apply(fn($file) => self::opcacheInvalidate($file))
             ->map(fn($file) => \unlink($file))
             ->reduce(fn($success, $ret) => $success && $ret, true);
     }
@@ -153,7 +153,7 @@ class Cache implements CacheInterface
         $key = (string)(new \ReflectionFunction($closure));
         $file = $this->getFile($key);
 
-        if (\opcache_is_script_cached($file) || \file_exists($file)) {
+        if (self::opcacheIsCached($file) || \file_exists($file)) {
             /** @noinspection PhpIncludeInspection */
             return include $file;
         }
@@ -224,5 +224,31 @@ class Cache implements CacheInterface
 
         $type = i\type_describe($ttl);
         throw new InvalidArgumentException("ttl should be of type int or DateInterval, not $type");
+    }
+
+    /**
+     * Wrapper for opcache_is_script_cached.
+     *
+     * @param string $file
+     * @return bool
+     */
+    protected static function opcacheIsCached(string $file): bool
+    {
+        return function_exists('opcache_is_script_cached')
+            ? \opcache_is_script_cached($file)
+            : false;
+    }
+
+    /**
+     * Wrapper for opcache_invalidate.
+     *
+     * @param string $file
+     * @return bool
+     */
+    protected static function opcacheInvalidate(string $file): bool
+    {
+        return function_exists('opcache_invalidate')
+            ? \opcache_invalidate($file, true)
+            : false;
     }
 }

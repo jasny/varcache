@@ -41,6 +41,22 @@ class CacheTest extends TestCase
         $this->cache = new Cache(vfsStream::url('cache'));
     }
 
+    /**
+     * @test
+     */
+    public function assertOpcacheIsEnabled()
+    {
+        $this->expectNotToPerformAssertions();
+
+        if (!function_exists('opcache_get_status')) {
+            $this->addWarning('opcache extension is missing');
+        }
+
+        if (\opcache_get_status() === false) {
+            $this->addWarning('opcache is disabled');
+        }
+    }
+
     public function testHas()
     {
         $this->assertTrue($this->cache->has('one'));

@@ -16,7 +16,6 @@
     },
     "require": {
         "php": ">=7.4.0",
-        "ext-zend-opcache": "*",
         "brick/varexporter": "^0.3.2",
         "improved/iterable": "^0.1.4",
         "improved/type": "^0.1.1",
