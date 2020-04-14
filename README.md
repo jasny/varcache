@@ -71,7 +71,7 @@ through reflection. This means that changes to the code don't automatically resu
 During development, you may not want to cache. `NoCache` is a null object that will not store anything.
 
 ```php
-use Jasny\VarCache\Cache;
+use Jasny\VarCache\NoCache;
 
 $cache = new NoCache();
 
