@@ -102,7 +102,7 @@ class CacheTest extends TestCase
     {
         $cache = new Cache(vfsStream::url('cache/missing'));
 
-        $this->expectWarningMessageMatches('/failed to open stream/');
+        $this->expectWarningMessageMatches('/failed to open stream/i');
         $this->assertFalse($cache->set('ten', 10));
     }
 
@@ -268,7 +268,7 @@ class CacheTest extends TestCase
 
         $closure = \Closure::fromCallable($this->createCallbackMock($this->once(), [], 1));
 
-        $this->expectWarningMessageMatches('/failed to open stream/');
+        $this->expectWarningMessageMatches('/failed to open stream/i');
         $this->assertEquals(1, $cache->resolve($closure));
     }
 
