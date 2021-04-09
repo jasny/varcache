@@ -50,9 +50,7 @@ class CacheTest extends TestCase
 
         if (!function_exists('opcache_get_status')) {
             $this->addWarning('opcache extension is missing');
-        }
-
-        if (\opcache_get_status() === false) {
+        } elseif (\opcache_get_status() === false) {
             $this->addWarning('opcache is disabled');
         }
     }
