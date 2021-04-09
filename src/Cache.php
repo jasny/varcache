@@ -43,7 +43,7 @@ class Cache implements CacheInterface
     {
         $file = $this->getFile($key);
 
-        if (!self::opcacheIsCached($file) && !@\file_exists($file)) {
+        if (!self::opcacheIsCached($file) && !\file_exists($file)) {
             return $default;
         }
 
