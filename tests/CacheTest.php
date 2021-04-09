@@ -177,9 +177,9 @@ class CacheTest extends TestCase
     {
         $this->assertTrue($this->cache->clear());
 
-        $this->assertFileNotExists(vfsStream::url('cache/cache.' . md5('one') . '.php'));
-        $this->assertFileNotExists(vfsStream::url('cache/cache.' . md5('two') . '.php'));
-        $this->assertFileNotExists(vfsStream::url('cache/cache.' . md5('old') . '.php'));
+        $this->assertFileDoesNotExist(vfsStream::url('cache/cache.' . md5('one') . '.php'));
+        $this->assertFileDoesNotExist(vfsStream::url('cache/cache.' . md5('two') . '.php'));
+        $this->assertFileDoesNotExist(vfsStream::url('cache/cache.' . md5('old') . '.php'));
     }
 
     public function testClearWithMissingDir()
@@ -252,7 +252,7 @@ class CacheTest extends TestCase
         $files = $dir->getChildren();
         $this->assertCount(1, $files);
         $this->assertInstanceOf(vfsStreamFile::class, $files[0]);
-        $this->assertRegExp('/^cache\.[0-9abcdef]{32}\.php$/', $files[0]->getName());
+        $this->assertMatchesRegularExpression('/^cache\.[0-9abcdef]{32}\.php$/', $files[0]->getName());
 
         /** @noinspection PhpIncludeInspection */
         $value = include $files[0]->url();
